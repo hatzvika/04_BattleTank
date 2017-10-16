@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Engine/World.h"
 #include "Tank.h"
 #include "TankPlayerController.generated.h"
 
@@ -19,15 +20,27 @@ protected:
 	// Called at the beginning of play.
 	virtual void BeginPlay() override;
 
-public:
+
+
+private:
 	// Called every time
 	virtual void Tick(float DeltaTime) override;
 
 	ATank* GetControlledTank() const;
 
-private:
 	// Start the tank moving the barrel so that a shot would hit
 	// where the crosshair intersects the world
 	void AimTowardsCrosshair();
-	
+	bool GetSightRayHitLocation(FVector& HitLocation) const;
+	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;
+	bool GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const;
+
+	UPROPERTY(EditAnywhere)
+		float CrosshairXLocation = 0.5;
+
+	UPROPERTY(EditAnywhere)
+		float CrosshairYLocation = 0.333;
+
+	UPROPERTY(EditAnywhere)
+		float LineTraceRange = 10*1000*100; // 10Kilometers = 10 * 1000m * 10cm
 };

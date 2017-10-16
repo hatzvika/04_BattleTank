@@ -4,7 +4,9 @@
 
 void ATankAIController::BeginPlay()
 {
-	ATank* PlayerTank = GetPlayerTank();
+	Super::BeginPlay();
+
+	PlayerTank = GetPlayerTank();
 	if (PlayerTank) {
 		UE_LOG(LogTemp, Warning, TEXT("The player controlled tank is %s."), *PlayerTank->GetName())
 	}
@@ -12,6 +14,15 @@ void ATankAIController::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("No player controlled tank found!"))
 	}
 
+}
+
+// Called every frame
+void ATankAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	if (PlayerTank) {
+		GetControlledTank()->AimAt(PlayerTank->GetActorLocation());
+	}
 }
 
 ATank* ATankAIController::GetControlledTank() const
